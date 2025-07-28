@@ -1,36 +1,73 @@
-version: "3.8"
+version: '3.9'
+
 services:
-  backend:
-    build: 
-      context: /.
-      dockerfile: Dockerfile
-    ports: 
-      - 8000:8000
-    depends_on:
-    - db
+  web:
+    build: .
     command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"  
+    depends_on:
+      - db
     environment:
-      DB_URL: postgres://db/project
+      - POSTGRES_DB=checkmark
+      - POSTGRES_USER=alireza
+      - POSTGRES_PASSWORD=12345678
+
+
   db:
-    image: postgres:13
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      # There is a location which is /var/lib/docker/... in your local machine
+      #  which store postgresdata but also it mounts to 
+      #  /var/lib/postgresql/data/ to manage consistently between container
+      #  and local machine. means it is persistent if container removed or
+      #  stopped
     environment:
       POSTGRES_DB: checkmark
-      POSTGRES_USER: postgres
+      POSTGRES_USER: alireza
       POSTGRES_PASSWORD: 12345678
-    ports:
-      - 5432:5432
-    volumes:
-      - postgresdata:/data/db
-    
-    # depends_on:
-    #   - backend
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./website.conf:/etc/nginx/website.conf
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
+
 volumes:
-  postgresdata:
+  postgres_data:
+
+
+
+# version: '3.9'
+# services:
+#   backend:
+#     build: 
+#       context: /.
+#       dockerfile: Dockerfile
+#     ports: 
+#       - 8000:8000
+#     depends_on:
+#     - db
+#     command: python manage.py runserver 0.0.0.0:8000
+#     environment:
+#       DB_URL: postgres://db/project
+#   db:
+#     image: postgres:13
+#     environment:
+#       POSTGRES_DB: checkmark
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: 12345678
+#     ports:
+#       - 5432:5432
+#     volumes:
+#       - postgresdata:/data/db
+    
+#     # depends_on:
+#     #   - backend
+#   nginx:
+#     image: nginx:latest
+#     volumes:
+#       - ./website.conf:/etc/nginx/website.conf
+#     ports:
+#       - "80:80"
+#     depends_on:
+#       - backend
+# volumes:
+#   postgresdata:
