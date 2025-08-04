@@ -11,9 +11,12 @@ services:
     depends_on:
       - db
     environment:
-      - POSTGRES_DB=checkmark
-      - POSTGRES_USER=alireza
-      - POSTGRES_PASSWORD=12345678
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+
 
 
   db:
@@ -26,48 +29,9 @@ services:
       #  and local machine. means it is persistent if container removed or
       #  stopped
     environment:
-      POSTGRES_DB: checkmark
-      POSTGRES_USER: alireza
-      POSTGRES_PASSWORD: 12345678
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
 volumes:
   postgres_data:
-
-
-
-# version: '3.9'
-# services:
-#   backend:
-#     build: 
-#       context: /.
-#       dockerfile: Dockerfile
-#     ports: 
-#       - 8000:8000
-#     depends_on:
-#     - db
-#     command: python manage.py runserver 0.0.0.0:8000
-#     environment:
-#       DB_URL: postgres://db/project
-#   db:
-#     image: postgres:13
-#     environment:
-#       POSTGRES_DB: checkmark
-#       POSTGRES_USER: postgres
-#       POSTGRES_PASSWORD: 12345678
-#     ports:
-#       - 5432:5432
-#     volumes:
-#       - postgresdata:/data/db
-    
-#     # depends_on:
-#     #   - backend
-#   nginx:
-#     image: nginx:latest
-#     volumes:
-#       - ./website.conf:/etc/nginx/website.conf
-#     ports:
-#       - "80:80"
-#     depends_on:
-#       - backend
-# volumes:
-#   postgresdata:
