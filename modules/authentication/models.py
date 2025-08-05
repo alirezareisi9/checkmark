@@ -20,7 +20,7 @@ class RoleChoices() :  #define variables for role field choices
     ]
 
 
-class UserInfo(AbstractUser) :
+class CustomUser(AbstractUser) :
     #fields in AbstractUser : username, password, first_name, last_name, last_login, email, is_staff, is_active, is_superuser, date_joined
     first_name = models.CharField(max_length=255)  # allow_unicode nokay
     last_name = models.CharField(max_length=255)
@@ -29,7 +29,7 @@ class UserInfo(AbstractUser) :
     employee_code = models.CharField(max_length=255, unique=True)
     role = models.CharField(max_length=255, choices=RoleChoices.ROLE_CHOICES, default=RoleChoices.EMPLOYEE_CHOICE)
     manager = models.ForeignKey('self', on_delete=models.PROTECT, null=True, blank=True)
-    change_password = models.DateField(auto_now_add=True)
+    change_password = models.BooleanField(default=False)
      # User should change his password first time login to account
     leave_limit = models.SmallIntegerField(null=True) 
      # It should'nt be null but for make superuser I make it null

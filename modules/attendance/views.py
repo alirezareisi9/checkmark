@@ -19,7 +19,7 @@ from ..authentication.serializers import *
 
 
 class FingerLog(generics.ListCreateAPIView):
-    queryset = UserInfo.objects.all()
+    queryset = CustomUser.objects.all()
     
     def get_serializer_class(self):
         return UserSerializer
@@ -42,7 +42,7 @@ class FingerLog(generics.ListCreateAPIView):
                 targets.save()
                 return Response("true")
         else:
-            user = UserInfo.objects.filter(username=serializer.data["username"])
+            user = CustomUser.objects.filter(username=serializer.data["username"])
             for users in user:
                 target = Log(user=users , date=time.strftime("%Y-%m-%d" , time.localtime()) , enterance=datetime.datetime.now() , text="auto added")
                 target.save()

@@ -1,6 +1,6 @@
-from .models import UserInfo
+from .models import CustomUser
 from rest_framework import serializers
-from .models import UserInfo
+from .models import CustomUser
 
 
 
@@ -8,7 +8,7 @@ from .models import UserInfo
 # List of instances of UserInfo : List serializer of user route
 class UserInfoListSerializer(serializers.ModelSerializer) :
     class Meta :
-        model = UserInfo
+        model = CustomUser
         fields = [
             'id', 'username', 'first_name', 'last_name', 'role'
         ]
@@ -16,7 +16,7 @@ class UserInfoListSerializer(serializers.ModelSerializer) :
 # Detail of any instance of UserInfo : Detail serializer of user route
 class UserInfoDetailsSerializer(serializers.ModelSerializer) :
     class Meta :
-        model = UserInfo
+        model = CustomUser
         fields = [
             'id', 'username', 'password', 'first_name', 'last_name', 'phone_number', 'national_code', 
             'employee_code', 'is_active', 'is_staff', 'is_superuser', 'role', 'manager', 'change_password', 'leave_limit'

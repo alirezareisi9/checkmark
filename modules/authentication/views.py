@@ -1,5 +1,5 @@
 from .serializers import UserInfoDetailsSerializer, UserInfoListSerializer
-from .models import UserInfo
+from .models import CustomUser
 from .permissions import IsManagerOrReadOnly
 from checkmark1.detail_viewset import DetailModelViewSet
 from django.shortcuts import get_object_or_404
@@ -29,17 +29,17 @@ class UserInfoViewSet(DetailModelViewSet) :
             # Set multiple querysets on a list
             q_list = [Q(id=self.request.user.id), Q(manager=self.request.user)]
             # Combine two parameters for a queryset by using reduce method
-            return UserInfo.objects.filter(reduce(operator.or_, q_list))
+            return CustomUser.objects.filter(reduce(operator.or_, q_list))
         if self.request.user.role == 'REPORTER' :
-            return UserInfo.objects.all()
+            return CustomUser.objects.all()
         if self.request.user.role == 'EMPLOYEE' :
-            return UserInfo.objects.filter(id=self.request.user.id)
+            return CustomUser.objects.filter(id=self.request.user.id)
 
     def create(self, request, *args, **kwargs):
         # Give response from create method of Mixin views
         data =  super().create(request, *args, **kwargs)
         # Give object from model
-        current_user  = UserInfo.objects.get(pk=data.data['id'])
+        current_user  = CustomUser.objects.get(pk=data.data['id'])
         # Give random password to password table of data and hash it at last
         random_password = str(random.randint(10000000, 99999999))
         data.data['password'] = random_password
