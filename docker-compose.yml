@@ -16,6 +16,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
+      # For running tests in modules
+      PYTHONPATH: ${PYTHONPATH} 
 
 
 

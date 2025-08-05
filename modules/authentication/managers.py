@@ -7,12 +7,12 @@ class CustomUserManager(BaseUserManager) :
 
     use_in_migrations = True
 
-    def _create_user(self, password=None, **extra_fields) :
+    def _create_user(self, password, **extra_fields) :
         # breakpoint()
         # Check each required and username fields not be null
         required = iter(self.model.REQUIRED_FIELDS)  # gen
         for field in required:
-            if not field:
+            if not extra_fields.get(field):
                 raise ValueError(f'{field} must be set!!')
 
         username_field = self.model.USERNAME_FIELD
@@ -27,7 +27,7 @@ class CustomUserManager(BaseUserManager) :
         return user
 
 
-    def create_user(self, password=None, **extra_fields):
+    def create_user(self, password, **extra_fields):
 
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_superuser', False)

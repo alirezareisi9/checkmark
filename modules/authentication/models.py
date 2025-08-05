@@ -25,7 +25,7 @@ class CustomUser(AbstractUser) :
     first_name = models.CharField(max_length=255)  # allow_unicode nokay
     last_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=11, unique=True)
-    national_code = models.CharField(max_length=10)
+    national_code = models.CharField(max_length=10, unique=True)
     employee_code = models.CharField(max_length=255, unique=True)
     role = models.CharField(max_length=255, choices=RoleChoices.ROLE_CHOICES, default=RoleChoices.EMPLOYEE_CHOICE)
     manager = models.ForeignKey('self', on_delete=models.PROTECT, null=True, blank=True)
@@ -42,7 +42,7 @@ class CustomUser(AbstractUser) :
 
     USERNAME_FIELD = 'employee_code'
     EMAIL_FIELD = 'phone_number'
-    REQUIRED_FIELDS = ['national_code', 'role']
+    REQUIRED_FIELDS = ['national_code', 'role', 'phone_number']
 
     # link model to manager model
     objects = managers.CustomUserManager()
