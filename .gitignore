@@ -210,3 +210,43 @@ __marimo__/
 
 # --------------------------------------------------Manual items--------------
 .env
+
+
+# What ChatGPT give me
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+.env
+*.sqlite3
+db.sqlite3
+/staticfiles/
+media/
+.DS_Store
+*.log
+*.pot
+*.pyc
+*.swp
+*.swo
+.idea/
+.vscode/
+*.db
+coverage/
+htmlcov/
+.pytest_cache/
+.tox/
+.mypy_cache/
+.postgres_data/
+postgres_data/
+
+# Docker
+*.pid
+*.bak
+*.tar
+*.log
+*.gz
+docker-compose.override.yml

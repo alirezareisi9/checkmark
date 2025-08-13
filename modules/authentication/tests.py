@@ -17,7 +17,6 @@ class UserManagersTests(TestCase):
         with self.assertRaises(ValueError):
             User.objects.create_user(employee_code=1, password='123', 
                                        national_code=1) 
-        
         with self.assertRaises(TypeError):
             User.objects.create_user(employee_code=1, phone_number=1, 
                                        role='EMPLOYEE', national_code=1)
@@ -28,6 +27,9 @@ class UserManagersTests(TestCase):
                                            role='EMPLOYEE')
         
         self.assertIsNone(user.username)
+        self.assertEqual(user.employee_code, 1)
+        self.assertTrue(user.check_password('123'))
+
 
         self.assertTrue(user.is_active)
         self.assertFalse(user.is_staff)
