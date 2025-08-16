@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinLengthValidator
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 import random
@@ -25,7 +26,7 @@ class CustomUser(AbstractUser) :
     first_name = models.CharField(max_length=255)  # allow_unicode nokay
     last_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=11, unique=True)
-    national_code = models.CharField(max_length=10, unique=True)
+    national_code = models.CharField(max_length=10, unique=True)  # check successfully : , validators=[MinLengthValidator(10)]
     employee_code = models.CharField(max_length=255, unique=True)
     role = models.CharField(max_length=255, choices=RoleChoices.ROLE_CHOICES, default=RoleChoices.EMPLOYEE_CHOICE)
     manager = models.ForeignKey('self', on_delete=models.PROTECT, null=True, blank=True)
@@ -48,4 +49,4 @@ class CustomUser(AbstractUser) :
     objects = managers.CustomUserManager()
 
     def __str__(self) -> str:
-        return self.employee_code
+        return str(self.employee_code)
