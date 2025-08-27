@@ -1,24 +1,15 @@
+# lib
+import random
+# third-party
 from django.db import models
 from django.core.validators import MinLengthValidator
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-import random
-from . import managers 
+# local
+from . import managers, choices
 
 
-class RoleChoices() :  #define variables for role field choices
-    EMPLOYEE_CHOICE = 'EMPLOYEE'
-    REPORTER_CHOICE = 'REPORTER'
-    MANAGER_CHOICE = 'MANAGER'
-    ADMIN_CHOICE = 'ADMIN'
-    #role field choices
 
-    ROLE_CHOICES = [
-        (EMPLOYEE_CHOICE, 'Employee'),
-        (REPORTER_CHOICE, 'Reporter'),
-        (MANAGER_CHOICE, 'Manager'),
-        (ADMIN_CHOICE, 'Admin'),   
-    ]
 
 
 class CustomUser(AbstractUser) :
@@ -28,7 +19,7 @@ class CustomUser(AbstractUser) :
     phone_number = models.CharField(max_length=11, unique=True)
     national_code = models.CharField(max_length=10, unique=True)  # check successfully : , validators=[MinLengthValidator(10)]
     employee_code = models.CharField(max_length=255, unique=True)
-    role = models.CharField(max_length=255, choices=RoleChoices.ROLE_CHOICES, default=RoleChoices.EMPLOYEE_CHOICE)
+    role = models.CharField(max_length=255, choices=choices.RoleChoices.ROLE_CHOICES, default=choices.RoleChoices.EMPLOYEE_CHOICE)
     manager = models.ForeignKey('self', on_delete=models.PROTECT, null=True, blank=True)
     change_password = models.BooleanField(default=False)
      # User should change his password first time login to account

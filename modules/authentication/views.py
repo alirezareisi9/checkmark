@@ -1,39 +1,53 @@
-from .serializers import UserInfoDetailsSerializer, UserInfoListSerializer
-from .models import CustomUser
-from .permissions import IsManagerOrReadOnly
-from checkmark1.detail_viewset import DetailModelViewSet
-from django.shortcuts import get_object_or_404
+# lib
+import random
+# third-party
 from django.db.models import Q
 from rest_framework import permissions
 from rest_framework.response import Response
-import operator
-from functools import reduce
-import random
+from rest_framework.pagination import PageNumberPagination
+# local
+from checkmark1.detail_viewset import DetailModelViewSet
+from .serializers import UserDetailSerializer, UserListSerializer
+from .models import CustomUser
+from .permissions import IsManagerOrReadOnly
+
+
+
+class CustomUserPagination(PageNumberPagination):
+    page_size = 10  # Default num of items per page
+    page_size_query_param = 'page-size'  # Name of query parameter shown
+    # num of items per page
+    max_page_size = 50  # Max items user can selected to show per page
+
 
 
 class UserInfoViewSet(DetailModelViewSet) :
 
-    serializer_class = UserInfoListSerializer
-    # If our action is list so serializer_class is UserInfoListSerializer, else it is UserInfoDetailsSerializer
-    details_serializer_class = UserInfoDetailsSerializer
-    permission_classes = [IsManagerOrReadOnly]
+    # If our action is list so serializer_class is UserInfoListSerializer,
+    #  else it is UserInfoDetailsSerializer
+    serializer_class = UserListSerializer
+    details_serializer_class = UserDetailSerializer
 
+    pagination_class = CustomUserPagination
 
-    def get_serializer_class(self):
-        if self.action != 'list' and self.details_serializer_class is not None :
-            return self.details_serializer_class
-        return super().get_serializer_class()
+    permission_classes = [IsManagerOrReadOnly,]
+
 
     def get_queryset(self):
-        if self.request.user.role == 'MANAGER' :
-            # Set multiple querysets on a list
-            q_list = [Q(id=self.request.user.id), Q(manager=self.request.user)]
-            # Combine two parameters for a queryset by using reduce method
-            return CustomUser.objects.filter(reduce(operator.or_, q_list))
-        if self.request.user.role == 'REPORTER' :
+        user = self.request.user
+
+        if user.role == 'MANAGER' :
+            return CustomUser.objects.filter(Q(id=user.id) | Q(manager=user))
+        
+        elif user.role == 'REPORTER' :
             return CustomUser.objects.all()
-        if self.request.user.role == 'EMPLOYEE' :
-            return CustomUser.objects.filter(id=self.request.user.id)
+        
+        elif user.role == 'EMPLOYEE' :
+            return CustomUser.objects.filter(id=user.id)
+
+        return CustomUser.objects.none()
+
+
 
     def create(self, request, *args, **kwargs):
         # Give response from create method of Mixin views

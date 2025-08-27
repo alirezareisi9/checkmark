@@ -1,29 +1,73 @@
-from .models import CustomUser
+# lib
+# third-party
 from rest_framework import serializers
+# local
+from .models import CustomUser
 from .models import CustomUser
 
 
 
 
 # List of instances of UserInfo : List serializer of user route
-class UserInfoListSerializer(serializers.ModelSerializer) :
+class UserListSerializer(serializers.ModelSerializer) :
     class Meta :
         model = CustomUser
         fields = [
-            'id', 'username', 'first_name', 'last_name', 'role'
+            'id', 
+            'username', 
+            'first_name', 
+            'last_name', 
+            'role'
         ]
+
+
+class UserCreateSerializer(serializers.HyperlinkedModelSerializer) :
+    class Meta :
+        model = CustomUser
+        fields = [
+            'id', 
+            'username', 
+            'password', 
+            'first_name', 
+            'last_name', 
+            'phone_number', 
+            'national_code', 
+            'employee_code', 
+            'is_active', 
+            'is_staff', 
+            'is_superuser', 
+            'role', 
+            'manager', 
+            'change_password', 
+            'leave_limit'
+        ]
+
+    password = serializers.CharField(write_only=True)
+
+
 
 # Detail of any instance of UserInfo : Detail serializer of user route
-class UserInfoDetailsSerializer(serializers.ModelSerializer) :
+class UserDetailSerializer(serializers.HyperlinkedModelSerializer) :
     class Meta :
         model = CustomUser
         fields = [
-            'id', 'username', 'password', 'first_name', 'last_name', 'phone_number', 'national_code', 
-            'employee_code', 'is_active', 'is_staff', 'is_superuser', 'role', 'manager', 'change_password', 'leave_limit'
+            'id', 
+            'username', 
+            'first_name', 
+            'last_name', 
+            'phone_number', 
+            'national_code', 
+            'employee_code', 
+            'is_active', 
+            'is_staff', 
+            'is_superuser', 
+            'role', 
+            'manager', 
+            'change_password', 
+            'leave_limit'
         ]
 
-    password = serializers.CharField(read_only=True)  # its not on Meta block
-
-
-        # read_only_fields=['password']  # If make field read_only, can't access and modify it
-
+    manager = serializers.HyperlinkedRelatedField(
+        view_name='user-detail', 
+        read_only=True
+    )

@@ -1,4 +1,7 @@
+# lib
+# third-party
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+# local
 from . import models
 
 

@@ -1,6 +1,7 @@
+# third-party
 from django.contrib.auth.base_user import BaseUserManager
-from . import models
-from . import helper
+# local
+from . import models, helpers, choices
 
 
 class CustomUserManager(BaseUserManager) :
@@ -44,7 +45,7 @@ class CustomUserManager(BaseUserManager) :
 
         # Check Role
         role = extra_fields.get('role')
-        if role not in (models.RoleChoices.MANAGER_CHOICE, models.RoleChoices.ADMIN_CHOICE):
-            raise ValueError(f'role must be {helper.get_role_label(models.RoleChoices.MANAGER_CHOICE)} or {helper.get_role_label(models.RoleChoices.ADMIN_CHOICE)}')
+        if role not in (choices.RoleChoices.MANAGER_CHOICE, choices.RoleChoices.ADMIN_CHOICE):
+            raise ValueError(f'role must be {helpers.get_role_label(choices.RoleChoices.MANAGER_CHOICE)} or {helpers.get_role_label(choices.RoleChoices.ADMIN_CHOICE)}')
 
         return self._create_user(password=password, **extra_fields)

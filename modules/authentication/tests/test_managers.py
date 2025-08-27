@@ -1,5 +1,10 @@
+# lib
+# third-party
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+#local
+
+
 
 class UserManagersTests(TestCase):
 
