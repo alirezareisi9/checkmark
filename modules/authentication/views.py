@@ -3,11 +3,18 @@ import random
 # third-party
 from django.db.models import Q
 from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.generics import UpdateAPIView
 # local
 from checkmark1.detail_viewset import DetailModelViewSet
-from .serializers import UserDetailSerializer, UserListSerializer
+
+from .serializers import (UserDetailSerializer,
+                           UserListSerializer, 
+                           UserCreateSerializer, 
+                           ChangePasswordSerializer)
+
 from .models import CustomUser
 from .permissions import IsManagerOrReadOnly
 
@@ -21,16 +28,35 @@ class CustomUserPagination(PageNumberPagination):
 
 
 
-class UserInfoViewSet(DetailModelViewSet) :
+class UsersViewSet(DetailModelViewSet) :
 
-    # If our action is list so serializer_class is UserInfoListSerializer,
-    #  else it is UserInfoDetailsSerializer
+    # If our action is list so serializer_class is UserListSerializer,
+    #  if it's create so UserCreateSerializer else it is UserDetailsSerializer
     serializer_class = UserListSerializer
     details_serializer_class = UserDetailSerializer
+    create_serializer_class = UserCreateSerializer
 
     pagination_class = CustomUserPagination
 
     permission_classes = [IsManagerOrReadOnly,]
+
+
+
+    def get_serializer_class(self):
+        
+        if self.action == 'create' and self.create_serializer_class:
+            return self.create_serializer_class
+        
+        return super().get_serializer_class()
+
+
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+
+        context['request'] = self.request
+        return context
+
 
 
     def get_queryset(self):
@@ -52,12 +78,22 @@ class UserInfoViewSet(DetailModelViewSet) :
     def create(self, request, *args, **kwargs):
         # Give response from create method of Mixin views
         data =  super().create(request, *args, **kwargs)
-        # Give object from model
+        
         current_user  = CustomUser.objects.get(pk=data.data['id'])
-        # Give random password to password table of data and hash it at last
+
         random_password = str(random.randint(10000000, 99999999))
-        data.data['password'] = random_password
         current_user.set_password(random_password)
         # Save object on db
         current_user.save()
+
+        data.data['password'] = random_password
         return data
+
+
+
+class ChangePasswordView(UpdateAPIView):
+    serializer_class = ChangePasswordSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user

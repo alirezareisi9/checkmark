@@ -154,7 +154,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # AUTH configuration
 
-AUTH_USER_MODEL = "authentication.CustomUser"
+AUTH_USER_MODEL = 'authentication.CustomUser'
 
 # Rest Framework configuration
 

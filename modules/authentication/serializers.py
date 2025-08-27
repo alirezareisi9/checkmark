@@ -8,66 +8,91 @@ from .models import CustomUser
 
 
 
-# List of instances of UserInfo : List serializer of user route
+# List of instances of Users : List serializer of user route
 class UserListSerializer(serializers.ModelSerializer) :
     class Meta :
         model = CustomUser
         fields = [
             'id', 
-            'username', 
+            'employee_code', 
             'first_name', 
             'last_name', 
             'role'
         ]
 
 
-class UserCreateSerializer(serializers.HyperlinkedModelSerializer) :
+class UserCreateSerializer(serializers.ModelSerializer) :
     class Meta :
         model = CustomUser
         fields = [
             'id', 
-            'username', 
+            'employee_code', 
             'password', 
             'first_name', 
             'last_name', 
             'phone_number', 
             'national_code', 
-            'employee_code', 
-            'is_active', 
-            'is_staff', 
-            'is_superuser', 
             'role', 
             'manager', 
             'change_password', 
-            'leave_limit'
+            'leave_limit',
+            'is_active', 
+            'is_staff', 
+            'is_superuser', 
         ]
 
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(read_only=True)
 
 
 
-# Detail of any instance of UserInfo : Detail serializer of user route
+# Detail of any instance of Users : Detail serializer of user route
 class UserDetailSerializer(serializers.HyperlinkedModelSerializer) :
+    
+    manager = serializers.HyperlinkedRelatedField(
+        view_name='authentication:users-detail',
+        read_only=True
+    )
+    # Relational field must provide a `queryset` argument, override `get_queryset`, or set read_only=`True`
+    
     class Meta :
         model = CustomUser
         fields = [
             'id', 
-            'username', 
+            'employee_code', 
             'first_name', 
             'last_name', 
             'phone_number', 
             'national_code', 
-            'employee_code', 
-            'is_active', 
-            'is_staff', 
-            'is_superuser', 
             'role', 
             'manager', 
             'change_password', 
-            'leave_limit'
+            'leave_limit', 
+            'is_active', 
+            'is_staff', 
+            'is_superuser', 
         ]
 
-    manager = serializers.HyperlinkedRelatedField(
-        view_name='user-detail', 
-        read_only=True
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    
+    old_password = serializers.CharField(
+        required=True,
+        min_length=8,
+        style={'input_type': 'password'}
     )
+
+    new_password = serializers.CharField(
+        required=True,
+        min_length=8, 
+        style={'input_type': 'password'}
+    )
+
+
+    
+    def create(self, instance, validated_data):
+        if not instance.check_password(validated_data.get('old_password')):
+            raise serializers.ValidationError()
+
+        instance.set_password(validated_data.get('new_password'))
+        instance.save()
