@@ -77,22 +77,15 @@ class UserDetailSerializer(serializers.HyperlinkedModelSerializer) :
 class ChangePasswordSerializer(serializers.Serializer):
     
     old_password = serializers.CharField(
+        write_only=True,
         required=True,
         min_length=8,
-        style={'input_type': 'password'}
+        style={'input_type': 'password'},
     )
 
     new_password = serializers.CharField(
+        write_only=True,
         required=True,
         min_length=8, 
-        style={'input_type': 'password'}
+        style={'input_type': 'password'},
     )
-
-
-    
-    def create(self, instance, validated_data):
-        if not instance.check_password(validated_data.get('old_password')):
-            raise serializers.ValidationError()
-
-        instance.set_password(validated_data.get('new_password'))
-        instance.save()

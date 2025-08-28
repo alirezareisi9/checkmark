@@ -2,11 +2,14 @@
 import random
 # third-party
 from django.db.models import Q
+from django.contrib.auth import password_validation
 from rest_framework import permissions
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.generics import UpdateAPIView
+from rest_framework.views import APIView
+from rest_framework.validators import ValidationError
+from rest_framework import status
 # local
 from checkmark1.detail_viewset import DetailModelViewSet
 
@@ -38,12 +41,12 @@ class UsersViewSet(DetailModelViewSet) :
 
     pagination_class = CustomUserPagination
 
-    permission_classes = [IsManagerOrReadOnly,]
+    permission_classes = (IsManagerOrReadOnly,)
 
 
 
     def get_serializer_class(self):
-        
+
         if self.action == 'create' and self.create_serializer_class:
             return self.create_serializer_class
         
@@ -88,12 +91,33 @@ class UsersViewSet(DetailModelViewSet) :
 
         data.data['password'] = random_password
         return data
+    
+    
 
 
 
-class ChangePasswordView(UpdateAPIView):
-    serializer_class = ChangePasswordSerializer
+class ChangePasswordView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def get_object(self):
-        return self.request.user
+    def post(self, request):
+        user = request.user
+        serializer = ChangePasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # Validate old password
+        if not user.check_password(serializer.validated_data.get('old_password')):
+            
+            return Response(
+                data={'old_password':'Wrong password. '}, 
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+    
+        # Validate new password
+        password_validation.validate_password(serializer.validated_data.get('new_password'), user)
+        user.set_password(serializer.validated_data.get('new_password'))
+        user.save()
+
+        return Response(
+            data={'status': 'password changed successfully'}, 
+            status=status.HTTP_200_OK,
+        )
