@@ -8,12 +8,17 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
+
+for run docker container in interactive command on 0.0.0.0:8000
+    docker compose run --rm -p 8000:8000 web python3 manage.py runserver 0.0.0.0:8000
+
 """
 
 from pathlib import Path
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
+from rest_framework.generics import UpdateAPIView
 from rest_framework.validators import ValidationError
 from rest_framework import status
 # local
@@ -16,10 +17,11 @@ from checkmark1.detail_viewset import DetailModelViewSet
 from .serializers import (UserDetailSerializer,
                            UserListSerializer, 
                            UserCreateSerializer, 
-                           ChangePasswordSerializer)
+                           ChangePasswordSerializer,
+                           ResetPasswordSerializer)
 
 from .models import CustomUser
-from .permissions import IsManagerOrReadOnly
+from .permissions import IsManagerOrReadOnly, IsManager
 
 
 
@@ -66,10 +68,10 @@ class UsersViewSet(DetailModelViewSet) :
         user = self.request.user
 
         if user.role == 'MANAGER' :
-            return CustomUser.objects.filter(Q(id=user.id) | Q(manager=user))
+            return CustomUser.objects.filter(Q(id=user.id) | Q(manager=user)).order_by('employee_code')
         
         elif user.role == 'REPORTER' :
-            return CustomUser.objects.all()
+            return CustomUser.objects.all().order_by('employee_code')
         
         elif user.role == 'EMPLOYEE' :
             return CustomUser.objects.filter(id=user.id)
@@ -86,6 +88,7 @@ class UsersViewSet(DetailModelViewSet) :
 
         random_password = str(random.randint(10000000, 99999999))
         current_user.set_password(random_password)
+        current_user.manager = request.user
         # Save object on db
         current_user.save()
 
@@ -115,9 +118,19 @@ class ChangePasswordView(APIView):
         # Validate new password
         password_validation.validate_password(serializer.validated_data.get('new_password'), user)
         user.set_password(serializer.validated_data.get('new_password'))
+        user.change_password = True
         user.save()
 
         return Response(
             data={'status': 'password changed successfully'}, 
             status=status.HTTP_200_OK,
         )
+
+
+
+class ResetPasswordView(UpdateAPIView):
+    serializer_class = ResetPasswordSerializer
+    permission_classes = (IsManager,)
+    http_method_names = ['put']
+    queryset = CustomUser.objects.all()
+    
