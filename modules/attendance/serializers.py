@@ -12,7 +12,7 @@ class TestSerializer(serializers.ModelSerializer):
         fields = ["id" ,"user"]
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserInfo
+        model = CustomUser
         fields = ["username"]
     username = serializers.CharField(max_length=90)
     def validate_username(self, value):
