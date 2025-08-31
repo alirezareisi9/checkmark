@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 for run docker container in interactive command on 0.0.0.0:8000
     docker compose run --rm -p 8000:8000 web python3 manage.py runserver 0.0.0.0:8000
 
+for run dbshell for postgres
+    docker exec -it <postgres_container_name> psql -U <db_user> -d <db_name>
 """
 
 from pathlib import Path
@@ -51,7 +53,6 @@ INSTALLED_APPS = [
     'rest_framework_nested',
     
     # MODULES APPS
-    'modules.attendance',
     'modules.authentication',
 ]
 
