@@ -22,9 +22,6 @@ from . import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('modules.authentication.urls', namespace='authentication')),
-    path('attend/' , include('modules.attendance.urls',
-                             namespace='attendance')),
-    path('', include('modules.authentication.urls'))
 ]
 
 if settings.DEBUG==True:
