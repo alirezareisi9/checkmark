@@ -1,4 +1,4 @@
-# Django Company Management Tool
+# Django Role-Based Security Management System
 **Manage Users, roles, and permissions with ease**
 
 This project is a role-based security management system built with Django.
