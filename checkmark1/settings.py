@@ -14,6 +14,10 @@ for run docker container in interactive command on 0.0.0.0:8000
 
 for run dbshell for postgres
     docker exec -it <postgres_container_name> psql -U <db_user> -d <db_name>
+
+for updating your local requirements.txt
+    docker run --rm <djangoimage> pip freeze > requirements.txt
+    
 """
 
 from pathlib import Path
@@ -35,7 +39,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost 127.0.0.1").split()
 
 
 # Application definition
