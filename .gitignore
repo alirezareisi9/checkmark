@@ -212,7 +212,7 @@ __marimo__/
 .env
 
 
-# What ChatGPT give me
+# ------------
 __pycache__/
 *.pyc
 *.pyo

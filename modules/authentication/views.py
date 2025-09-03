@@ -108,7 +108,9 @@ class ChangePasswordView(APIView):
         serializer.is_valid(raise_exception=True)
 
         # Validate old password
-        if not user.check_password(serializer.validated_data.get('old_password')):
+        if not user.check_password(
+            serializer.validated_data.get('old_password')
+        ):
             
             return Response(
                 data={'old_password':'Wrong password. '}, 
@@ -116,8 +118,13 @@ class ChangePasswordView(APIView):
             )
     
         # Validate new password
-        password_validation.validate_password(serializer.validated_data.get('new_password'), user)
-        user.set_password(serializer.validated_data.get('new_password'))
+        password_validation.validate_password(
+            serializer.validated_data.get('new_password'), user
+        )
+
+        user.set_password(
+            serializer.validated_data.get('new_password')
+        )
         user.change_password = True
         user.save()
 

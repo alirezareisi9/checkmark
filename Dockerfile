@@ -27,8 +27,14 @@ WORKDIR /code
 #  will be relative to this directory.
 
 COPY requirements.txt /code/
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your Django project
 COPY . /code/
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+EXPOSE 8000
+
+CMD ["gunicorn", "checkmark1.wsgi:application", "--bind", "0.0.0.0:8000"]
