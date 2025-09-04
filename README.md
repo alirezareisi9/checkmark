@@ -20,7 +20,6 @@ There are three main roles plus an admin role with restricted access:
 - **👤 Employee** -> Read-only access only to their own profile and change password of self.
 
 
----
 ### 🔑 Views & Permissions
 1- **Users List** (/users/)
   - *📖 GET* -> Lists user profiles.
