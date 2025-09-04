@@ -61,3 +61,49 @@ There are three main roles plus an admin role with restricted access:
 | **Users Detail – DELETE**  |  ✔️ Own team   |      ❌       |      ❌       |
 | **Change Password – POST** |    ✔️ Self     |   ✔️ Self     |   ✔️ Self     |
 | **Reset Password – PUT**   |  ✔️ Employees  |      ❌       |      ❌       |
+
+
+## Project Structure
+
+django-access-control
+├── checkmark1
+│   ├── asgi.py
+│   ├── detail_viewset.py
+│   ├── __init__.py
+│   ├── settings_product.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── modules
+│   └── authentication
+|       ├── admin.py
+|       ├── apps.py
+|       ├── choices.py
+|       ├── forms.py
+|       ├── helpers.py
+|       ├── __init__.py
+|       ├── managers.py
+|       ├── migrations
+|       │   ├── 0001_initial.py
+|       │   └── __init__.py
+|       ├── models.py
+|       ├── permissions.py
+|       ├── project-structure.txt
+|       ├── serializers.py
+|       ├── tests
+|       │   ├── __init__.py
+|       │   ├── test_change_password_view.py
+|       │   ├── test_managers.py
+|       │   ├── test_reset_password_view.py
+|       │   └── test_users_views.py
+|       ├── urls.py
+|       └── views.py
+├── manage.py
+├── docker-compose.yml
+├── Dockerfile
+├── staticfiles
+├── media
+├── nginx
+│   └── default.conf
+├── requirements.txt
+└── README.md
