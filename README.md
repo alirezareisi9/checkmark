@@ -64,7 +64,7 @@ There are three main roles plus an admin role with restricted access:
 
 
 ## Project Structure
-
+``` text
 django-access-control
 ├── checkmark1
 │   ├── asgi.py
@@ -107,3 +107,4 @@ django-access-control
 │   └── default.conf
 ├── requirements.txt
 └── README.md
+```
