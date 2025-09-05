@@ -137,23 +137,23 @@ matches the database name, user, password, host, and port you want to use.*
 
 3. Build and start the containers:
 ``` bash
-docker-compose up --build -d
+docker compose up --build -d
 
 ```
 4. Apply database migrations:
 ``` bash
-docker-compose exec web python manage.py migrate
+docker compose exec django python manage.py migrate
 
 ```
 5. Create a superuser (for admin access):
 ``` bash
-docker-compose exec web python manage.py createsuperuser
+docker compose exec django python manage.py createsuperuser
 
 ```
 6. Access the app:
 
-- 🌐 **API:** [`http://localhost:8000/`](http://localhost:8000/)  
-- 🔑 **Admin Panel:** [`http://localhost:8000/admin/`](http://localhost:8000/admin/)
+- 🌐 **API:** [`http://localhost:8000/`](http://localhost/)
+- 🔑 **Admin Panel:** [`http://localhost:8000/admin/`](http://localhost/admin/)
 
 ---
 ## 💻 Run Locally (Without Docker)
@@ -217,5 +217,28 @@ python manage.py runserver
 ```
 10. Access the app:
 
-- 🌐 **API:** [`http://localhost/`](http://localhost/)  
-- 🔑 **Admin Panel:** [`http://localhost/admin/`](http://localhost/admin/)
+- 🌐 **API:** [`http://localhost/`](http://localhost:8000/)  
+- 🔑 **Admin Panel:** [`http://localhost/admin/`](http://localhost:8000/admin/)
+
+## 🧪 Running Tests
+
+This project includes **43 test cases** located in the `tests/` directories of the app modules.  
+Tests cover user views, manager permissions, password changes, and more.
+
+---
+
+### 1️⃣ Run Tests Locally (without Docker)
+
+Run all tests
+``` bash
+python manage.py test
+
+```
+---
+### 2️⃣ Run Tests in Docker Environment
+
+``` bash
+docker compose exec django python manage.py test
+
+```
+---
