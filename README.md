@@ -9,6 +9,9 @@ It provides different responses and permissions depending on a user’s role wit
 - 🌐 REST Browsable API interface for easy interaction and testing.
 - 🖥️ Currently not deployed to a live domain — but you can run it on your localhost or configure it for any domain.
 
+
+---
+
 ## Features
 **This system enforces role-based access control (RBAC) across four views.
 There are three main roles plus an admin role with restricted access:**
@@ -66,57 +69,10 @@ There are three main roles plus an admin role with restricted access:**
 | **Users Detail – DELETE**  |  ✔️ Own team   |      ❌       |      ❌       |
 | **Change Password – POST** |    ✔️ Self     |   ✔️ Self     |   ✔️ Self     |
 | **Reset Password – PUT**   |  ✔️ Employees  |      ❌       |      ❌       |
-
-
-## Project Structure
-``` text
-django-access-control
-├── checkmark1
-│   ├── asgi.py
-│   ├── detail_viewset.py
-│   ├── __init__.py
-│   ├── settings_product.py
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── modules
-│   └── authentication
-|       ├── admin.py
-|       ├── apps.py
-|       ├── choices.py
-|       ├── forms.py
-|       ├── helpers.py
-|       ├── __init__.py
-|       ├── managers.py
-|       ├── migrations
-|       │   ├── 0001_initial.py
-|       │   └── __init__.py
-|       ├── models.py
-|       ├── permissions.py
-|       ├── project-structure.txt
-|       ├── serializers.py
-|       ├── tests
-|       │   ├── __init__.py
-|       │   ├── test_change_password_view.py
-|       │   ├── test_managers.py
-|       │   ├── test_reset_password_view.py
-|       │   └── test_users_views.py
-|       ├── urls.py
-|       └── views.py
-├── manage.py
-├── docker-compose.yml
-├── Dockerfile
-├── staticfiles
-├── media
-├── nginx
-│   └── default.conf
-├── requirements.txt
-└── README.md
-```
 ## 🚀 How to Run the Project
 
 You can run this project in two ways: using **Docker** (recommended) or running it manually.
-at first clone the repository:
+First,  clone the repository:
  ```bash
  git clone https://github.com/alirezareisi9/django-access-control.git
  cd django-access-control
@@ -152,8 +108,8 @@ docker compose exec django python manage.py createsuperuser
 ```
 6. Access the app:
 
-- 🌐 **API:** [`http://localhost:8000/`](http://localhost/)
-- 🔑 **Admin Panel:** [`http://localhost:8000/admin/`](http://localhost/admin/)
+- 🌐 **API:** [`http://localhost/`](http://localhost/)
+- 🔑 **Admin Panel:** [`http://localhost/admin/`](http://localhost/admin/)
 
 ---
 ## 💻 Run Locally (Without Docker)
@@ -217,8 +173,8 @@ python manage.py runserver
 ```
 10. Access the app:
 
-- 🌐 **API:** [`http://localhost/`](http://localhost:8000/)  
-- 🔑 **Admin Panel:** [`http://localhost/admin/`](http://localhost:8000/admin/)
+- 🌐 **API:** [`http://localhost:8000/`](http://localhost:8000/)  
+- 🔑 **Admin Panel:** [`http://localhost:8000/admin/`](http://localhost:8000/admin/)
 
 ## 🧪 Running Tests
 
@@ -240,5 +196,51 @@ python manage.py test
 ``` bash
 docker compose exec django python manage.py test
 
+```
+
+## 🗂 Project Structure
+``` text
+django-access-control
+├── checkmark1
+│   ├── asgi.py
+│   ├── detail_viewset.py
+│   ├── __init__.py
+│   ├── settings_product.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── modules
+│   └── authentication
+|       ├── admin.py
+|       ├── apps.py
+|       ├── choices.py
+|       ├── forms.py
+|       ├── helpers.py
+|       ├── __init__.py
+|       ├── managers.py
+|       ├── migrations
+|       │   ├── 0001_initial.py
+|       │   └── __init__.py
+|       ├── models.py
+|       ├── permissions.py
+|       ├── project-structure.txt
+|       ├── serializers.py
+|       ├── tests
+|       │   ├── __init__.py
+|       │   ├── test_change_password_view.py
+|       │   ├── test_managers.py
+|       │   ├── test_reset_password_view.py
+|       │   └── test_users_views.py
+|       ├── urls.py
+|       └── views.py
+├── manage.py
+├── docker-compose.yml
+├── Dockerfile
+├── staticfiles
+├── media
+├── nginx
+│   └── default.conf
+├── requirements.txt
+└── README.md
 ```
 ---
