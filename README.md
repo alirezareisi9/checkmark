@@ -11,10 +11,12 @@ It provides different responses and permissions depending on a user’s role wit
 <br>
 
 ## Features
+
 **This system enforces role-based access control (RBAC) across four views.
 There are three main roles plus an admin role with restricted access:**
 
 ---
+
 ### 👥 Roles
 <br>
 
@@ -24,7 +26,9 @@ There are three main roles plus an admin role with restricted access:**
 - **👤 Employee** -> Read-only access only to their own profile and change password of self.
 
 
+
 ---
+
 ### 🔑 Views & Permissions
 <br>
 
