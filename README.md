@@ -8,9 +8,7 @@ It provides different responses and permissions depending on a user’s role wit
 - 🚀 Deployment-ready using Gunicorn for high-performance request handling and Nginx to serve static and media    files efficiently.
 - 🌐 REST Browsable API interface for easy interaction and testing.
 - 🖥️ Currently not deployed to a live domain — but you can run it on your localhost or configure it for any domain.
-
-
----
+<br>
 
 ## Features
 **This system enforces role-based access control (RBAC) across four views.
@@ -18,6 +16,8 @@ There are three main roles plus an admin role with restricted access:**
 
 ---
 ### 👥 Roles
+<br>
+
 - **👑 Admin** -> Full access to the Django Admin Panel (exclusive, not available to other roles).
 - **🧑‍💼 Manager** -> Manages employees and self, can create/update/delete it's own employees and self profiles.
 - **📰 Reporter** -> Read-only access to users data and change password of self.
@@ -26,7 +26,8 @@ There are three main roles plus an admin role with restricted access:**
 
 ---
 ### 🔑 Views & Permissions
----
+<br>
+
 1. **Users List** `/users/`
   - *📖 GET* -> Lists user profiles.
     - All roles can access ✅ , but each role only sees the profiles allowed by their permissions.
@@ -69,6 +70,9 @@ There are three main roles plus an admin role with restricted access:**
 | **Users Detail – DELETE**  |  ✔️ Own team   |      ❌       |      ❌       |
 | **Change Password – POST** |    ✔️ Self     |   ✔️ Self     |   ✔️ Self     |
 | **Reset Password – PUT**   |  ✔️ Employees  |      ❌       |      ❌       |
+
+<br>
+
 ## 🚀 How to Run the Project
 
 You can run this project in two ways: using **Docker** (recommended) or running it manually.
@@ -176,6 +180,8 @@ python manage.py runserver
 - 🌐 **API:** [`http://localhost:8000/`](http://localhost:8000/)  
 - 🔑 **Admin Panel:** [`http://localhost:8000/admin/`](http://localhost:8000/admin/)
 
+<br>
+
 ## 🧪 Running Tests
 
 This project includes **43 test cases** located in the `tests/` directories of the app modules.  
@@ -197,6 +203,7 @@ python manage.py test
 docker compose exec django python manage.py test
 
 ```
+<br>
 
 ## 🗂 Project Structure
 ``` text
